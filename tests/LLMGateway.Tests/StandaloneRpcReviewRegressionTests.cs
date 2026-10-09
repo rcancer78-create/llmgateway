@@ -17,15 +17,15 @@ public sealed class StandaloneRpcReviewRegressionTests
         var root = Directory.CreateTempSubdirectory("llmgw-owned-rpc-shape-");
         try
         {
-            var marker = Path.Combine(root.FullName, "response-emitted");
-            await using var fixture = await RpcFixture.CreateAsync(root.FullName, response, marker);
+            await using var fixture = await RpcFixture.CreateAsync(root.FullName, response);
             using var stop = new CancellationTokenSource(TimeSpan.FromSeconds(12));
             var request = fixture.Client.RequestAsync("owned-fixture", null, TimeSpan.FromSeconds(8), stop.Token);
             Exception? requestFailure = null;
             Exception? disposalFailure = null;
             try
             {
-                await WaitForOwnedMarkerAsync(marker, stop.Token);
+                // Startup has completed before the request deadline begins. A malformed
+                // response must still fail promptly, independently of a later fixture marker.
                 requestFailure = await Record.ExceptionAsync(() => request.WaitAsync(TimeSpan.FromSeconds(3)));
             }
             finally
@@ -53,7 +53,7 @@ public sealed class StandaloneRpcReviewRegressionTests
         try
         {
             var response = System.Text.Json.JsonSerializer.Serialize(new { jsonrpc = "2.0", id = 1, error = new { code, message } });
-            await using var fixture = await RpcFixture.CreateAsync(root.FullName, response, null);
+            await using var fixture = await RpcFixture.CreateAsync(root.FullName, response);
             using var stop = new CancellationTokenSource(TimeSpan.FromSeconds(12));
             var error = await Assert.ThrowsAsync<GatewayException>(() =>
                 fixture.Client.RequestAsync("owned-fixture", null, TimeSpan.FromSeconds(8), stop.Token));
@@ -62,26 +62,43 @@ public sealed class StandaloneRpcReviewRegressionTests
         finally { root.Delete(true); }
     }
 
-    private static async Task WaitForOwnedMarkerAsync(string marker, CancellationToken token)
-    {
-        while (!File.Exists(marker)) await Task.Delay(20, token);
-    }
-
     private sealed class RpcFixture : IAsyncDisposable
     {
         private RpcFixture(JsonRpcStdioClient client) => Client = client;
         public JsonRpcStdioClient Client { get; }
 
-        public static async Task<RpcFixture> CreateAsync(string root, string response, string? marker)
+        public static async Task<RpcFixture> CreateAsync(string root, string response)
         {
             var script = Path.Combine(root, "owned-rpc.ps1");
-            var mark = marker is null ? string.Empty : "[IO.File]::WriteAllText('" + marker.Replace("'", "''") + "', 'emitted')";
+            var ready = Path.Combine(root, "ready");
+            var quotedReady = ready.Replace("'", "''");
             await File.WriteAllTextAsync(script,
-                "$null = [Console]::In.ReadLine()\n[Console]::Out.WriteLine('" + response.Replace("'", "''") + "')\n[Console]::Out.Flush()\n" + mark + "\nStart-Sleep -Seconds 60\n");
+                "$ErrorActionPreference = 'Stop'\n"
+                + "[IO.File]::WriteAllText('" + quotedReady + ".tmp', 'ready')\n"
+                + "[IO.File]::Move('" + quotedReady + ".tmp', '" + quotedReady + "')\n"
+                + "$null = [Console]::In.ReadLine()\n[Console]::Out.WriteLine('" + response.Replace("'", "''") + "')\n[Console]::Out.Flush()\nStart-Sleep -Seconds 60\n");
             var shell = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
             var launch = new NativeLaunch(new(shell, [], LaunchKind.Direct, shell),
                 ["-NoProfile", "-NonInteractive", "-File", script], new Dictionary<string, string?>(), root);
-            return new RpcFixture(JsonRpcStdioClient.Start(launch));
+            var fixture = new RpcFixture(JsonRpcStdioClient.Start(launch));
+            try
+            {
+                // Parallel subprocess tests under coverage can delay a cold PowerShell
+                // startup. Give startup its own budget without relaxing protocol deadlines.
+                using var startup = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                while (!File.Exists(ready)) await Task.Delay(20, startup.Token);
+                return fixture;
+            }
+            catch (OperationCanceledException ex)
+            {
+                await fixture.DisposeAsync();
+                throw new TimeoutException("The owned RPC fixture did not become ready within 30 seconds.", ex);
+            }
+            catch
+            {
+                await fixture.DisposeAsync();
+                throw;
+            }
         }
 
         public async ValueTask DisposeAsync()
