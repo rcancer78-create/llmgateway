@@ -34,7 +34,10 @@ public sealed class NativeStdinDeliveryReviewTests
               fs.closeSync(0);
               fs.writeFileSync(receipt, JSON.stringify({bytes:0}));
             }
-            fs.writeFileSync(receipt + '.ready', String(process.pid));
+            // Publish readiness only after the PID file has been fully written and closed.
+            // Creating .ready directly lets the parent observe it while writeFileSync owns it.
+            fs.writeFileSync(receipt + '.ready.tmp', String(process.pid), {flag:'wx'});
+            fs.renameSync(receipt + '.ready.tmp', receipt + '.ready');
             const until = Date.now() + 20000;
             while (!fs.existsSync(receipt + '.release')) {
               if (Date.now() >= until) process.exit(8);
