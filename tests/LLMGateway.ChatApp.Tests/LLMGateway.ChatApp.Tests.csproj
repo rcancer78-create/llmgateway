@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/LLMGateway.ChatApp/LLMGateway.ChatApp.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" PrivateAssets="all" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <Using Include="Xunit" />
+    <EmbeddedResource Include="../../src/LLMGateway.ChatApp/Styles/Colors.xaml" LogicalName="OwnedStyles.Colors.xaml" />
+    <EmbeddedResource Include="../../src/LLMGateway.ChatApp/Styles/Icons.xaml" LogicalName="OwnedStyles.Icons.xaml" />
+    <EmbeddedResource Include="../../src/LLMGateway.ChatApp/Styles/Styles.xaml" LogicalName="OwnedStyles.Styles.xaml" />
+  </ItemGroup>
+</Project>

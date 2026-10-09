@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <RootNamespace>LLMGateway.Api</RootNamespace>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LLMGateway.Native\LLMGateway.Native.csproj" />
+    <ProjectReference Include="..\LLMGateway.Server\LLMGateway.Server.csproj" />
+  </ItemGroup>
+</Project>

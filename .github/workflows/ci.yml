@@ -1,0 +1,96 @@
+name: Windows build, tests and packages
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Set up Node for owned CLI test fixtures
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Restore
+        run: dotnet restore LLMGateway.sln
+
+      - name: Build Release
+        run: dotnet build LLMGateway.sln -c Release --no-restore -warnaserror
+
+      - name: Run full offline suite and collect coverage
+        run: >
+          dotnet test LLMGateway.sln -c Release --no-build --no-restore --nologo
+          --blame-hang --blame-hang-timeout 2m
+          --collect:"XPlat Code Coverage"
+          --logger trx
+          --results-directory TestResults
+
+      - name: Upload tests and coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LLMGateway-test-results
+          path: TestResults/**
+          if-no-files-found: warn
+          retention-days: 7
+
+  package:
+    name: Package ${{ matrix.application }}
+    needs: build-and-test
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        application: [LLMGateway.Api, LLMGateway.ChatApp]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish self-contained Windows application
+        run: >
+          dotnet publish src/${{ matrix.application }}/${{ matrix.application }}.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=false -p:PublishTrimmed=false
+          -o artifacts/portable/${{ matrix.application }}
+
+      - name: Package application and public documentation
+        shell: pwsh
+        env:
+          APPLICATION: ${{ matrix.application }}
+        run: |
+          $packagePath = Join-Path $env:GITHUB_WORKSPACE ('artifacts/portable/' + $env:APPLICATION)
+          Copy-Item -LiteralPath LICENSE, README.md -Destination $packagePath
+          $docsPath = Join-Path $packagePath 'docs'
+          New-Item -ItemType Directory -Path $docsPath -Force | Out-Null
+          Copy-Item -LiteralPath docs/technical-details.md, docs/REAL_PROVIDER_TESTS.md -Destination $docsPath
+          $archivePath = Join-Path $env:GITHUB_WORKSPACE ('artifacts/portable/' + $env:APPLICATION + '-windows-x64.zip')
+          Compress-Archive -LiteralPath $packagePath -DestinationPath $archivePath -Force
+
+      - name: Upload Windows application
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.application }}-windows-x64
+          path: artifacts/portable/${{ matrix.application }}-windows-x64.zip
+          if-no-files-found: error
+          retention-days: 14

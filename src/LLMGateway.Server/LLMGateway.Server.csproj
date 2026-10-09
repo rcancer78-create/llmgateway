@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>LLMGateway.Server</RootNamespace>
+    <Description>OpenAI-compatible HTTP endpoints for ILlmGateway (embeddable).</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\LLMGateway.Core\LLMGateway.Core.csproj" />
+  </ItemGroup>
+</Project>

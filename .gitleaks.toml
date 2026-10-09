@@ -1,0 +1,17 @@
+# Keep the built-in detectors. Only exact invalid, owned test fixtures are exempted.
+# JWT fixtures have synthetic decoded signatures (one lacks an alg header); the
+# PEM-shaped strings contain non-key marker text. None can authenticate.
+# Do not add path, rule, or broad token-prefix exclusions.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Exact invalid synthetic credential-format fixtures only"
+regexTarget = "secret"
+regexes = [
+  '''^-----BEGIN\ EC\ PRIVATE\ KEY-----\\nowned-synthetic-placeholder\\n-----END\ EC\ PRIVATE\ KEY-----"\)]\r?\n\ \ \ \ \[InlineData\("-----BEGIN\ OPENSSH\ PRIVATE\ KEY-----$''',
+  '''^eyJhbGciOiJIUzI1NiJ9\.eyJzdWIiOiJmaXh0dXJlIn0\.c3ludGhldGlj$''',
+  '''^eyJvd25lZCI6dHJ1ZX0\.eyJmaXh0dXJlIjp0cnVlfQ\.b3duZWRub3Rhc2lnbmF0dXJl$''',
+  '''^eyJvd25lZCI6dHJ1ZX0\.eyJmaXh0dXJlIjp0cnVlfQ\.b3duZWRub3Rhc2lnbmF0dXJl\\r\\n$''',
+  '''^eyJvd25lZCI6dHJ1ZX0\.eyJmaXh0dXJlIjp0cnVlfQ\.b3duZWRub3Rhc2lnbmF0dXJl\\t$''',
+]

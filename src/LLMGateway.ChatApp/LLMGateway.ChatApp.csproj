@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>LLMGateway.ChatApp</RootNamespace>
+    <AssemblyName>LLMGateway.ChatApp</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="LLMGateway.ChatApp.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LLMGateway.Native\LLMGateway.Native.csproj" />
+    <ProjectReference Include="..\LLMGateway.Server\LLMGateway.Server.csproj" />
+  </ItemGroup>
+</Project>

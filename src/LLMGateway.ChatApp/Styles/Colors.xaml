@@ -1,0 +1,105 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Core Palette Colors -->
+    <Color x:Key="AppBackgroundColor">#0D0F14</Color>
+    <Color x:Key="HeaderBackgroundColor">#141720</Color>
+    <Color x:Key="SurfaceColor">#181B26</Color>
+    <Color x:Key="CardBackgroundColor">#1D212F</Color>
+    <Color x:Key="CardBackgroundHoverColor">#252A3B</Color>
+    <Color x:Key="CardBorderColor">#292F42</Color>
+    <Color x:Key="CardBorderLightColor">#363E56</Color>
+
+    <Color x:Key="InputBackgroundColor">#12151D</Color>
+    <Color x:Key="InputBorderColor">#2E354A</Color>
+    <Color x:Key="InputBorderFocusColor">#3B82F6</Color>
+
+    <!-- Accent Colors -->
+    <Color x:Key="PrimaryColor">#3B82F6</Color>
+    <Color x:Key="PrimaryHoverColor">#2563EB</Color>
+    <Color x:Key="PrimaryPressedColor">#1D4ED8</Color>
+    <Color x:Key="PrimaryMutedColor">#1E293B</Color>
+
+    <Color x:Key="SuccessColor">#10B981</Color>
+    <Color x:Key="SuccessBackgroundColor">#0E2820</Color>
+    <Color x:Key="SuccessBorderColor">#059669</Color>
+
+    <Color x:Key="WarningColor">#F59E0B</Color>
+    <Color x:Key="WarningBackgroundColor">#2A200B</Color>
+    <Color x:Key="WarningBorderColor">#D97706</Color>
+
+    <Color x:Key="DangerColor">#EF4444</Color>
+    <Color x:Key="DangerHoverColor">#DC2626</Color>
+    <Color x:Key="DangerBackgroundColor">#2D1316</Color>
+    <Color x:Key="DangerBorderColor">#B91C1C</Color>
+
+    <Color x:Key="InfoColor">#38BDF8</Color>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimaryColor">#F8FAFC</Color>
+    <Color x:Key="TextSecondaryColor">#94A3B8</Color>
+    <Color x:Key="TextMutedColor">#64748B</Color>
+
+    <!-- Chat Bubble Colors -->
+    <Color x:Key="UserBubbleColor">#1E2A44</Color>
+    <Color x:Key="UserBubbleBorderColor">#2E4068</Color>
+    <Color x:Key="AssistantBubbleColor">#1A1E2B</Color>
+    <Color x:Key="AssistantBubbleBorderColor">#2B3247</Color>
+    <Color x:Key="ToolBubbleColor">#0F251E</Color>
+    <Color x:Key="ToolBubbleBorderColor">#144637</Color>
+    <Color x:Key="ReasoningBackgroundColor">#12151E</Color>
+    <Color x:Key="ReasoningBorderColor">#262C3D</Color>
+
+    <!-- Solid Brushes -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackgroundColor}" />
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="{StaticResource HeaderBackgroundColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}" />
+    <SolidColorBrush x:Key="CardBackgroundHoverBrush" Color="{StaticResource CardBackgroundHoverColor}" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{StaticResource CardBorderColor}" />
+    <SolidColorBrush x:Key="CardBorderLightBrush" Color="{StaticResource CardBorderLightColor}" />
+
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="{StaticResource InputBackgroundColor}" />
+    <SolidColorBrush x:Key="InputBorderBrush" Color="{StaticResource InputBorderColor}" />
+    <SolidColorBrush x:Key="InputBorderFocusBrush" Color="{StaticResource InputBorderFocusColor}" />
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="PrimaryHoverBrush" Color="{StaticResource PrimaryHoverColor}" />
+    <SolidColorBrush x:Key="PrimaryPressedBrush" Color="{StaticResource PrimaryPressedColor}" />
+    <SolidColorBrush x:Key="PrimaryMutedBrush" Color="{StaticResource PrimaryMutedColor}" />
+
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="{StaticResource SuccessBackgroundColor}" />
+    <SolidColorBrush x:Key="SuccessBorderBrush" Color="{StaticResource SuccessBorderColor}" />
+
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="{StaticResource WarningBackgroundColor}" />
+    <SolidColorBrush x:Key="WarningBorderBrush" Color="{StaticResource WarningBorderColor}" />
+
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+    <SolidColorBrush x:Key="DangerHoverBrush" Color="{StaticResource DangerHoverColor}" />
+    <SolidColorBrush x:Key="DangerBackgroundBrush" Color="{StaticResource DangerBackgroundColor}" />
+    <SolidColorBrush x:Key="DangerBorderBrush" Color="{StaticResource DangerBorderColor}" />
+
+    <SolidColorBrush x:Key="InfoBrush" Color="{StaticResource InfoColor}" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+
+    <SolidColorBrush x:Key="UserBubbleBrush" Color="{StaticResource UserBubbleColor}" />
+    <SolidColorBrush x:Key="UserBubbleBorderBrush" Color="{StaticResource UserBubbleBorderColor}" />
+    <SolidColorBrush x:Key="AssistantBubbleBrush" Color="{StaticResource AssistantBubbleColor}" />
+    <SolidColorBrush x:Key="AssistantBubbleBorderBrush" Color="{StaticResource AssistantBubbleBorderColor}" />
+    <SolidColorBrush x:Key="ToolBubbleBrush" Color="{StaticResource ToolBubbleColor}" />
+    <SolidColorBrush x:Key="ToolBubbleBorderBrush" Color="{StaticResource ToolBubbleBorderColor}" />
+    <SolidColorBrush x:Key="ReasoningBackgroundBrush" Color="{StaticResource ReasoningBackgroundColor}" />
+    <SolidColorBrush x:Key="ReasoningBorderBrush" Color="{StaticResource ReasoningBorderColor}" />
+
+    <!-- ScrollBar Brushes -->
+    <SolidColorBrush x:Key="ScrollBarTrackBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#37415B" />
+    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#4B587B" />
+    <SolidColorBrush x:Key="ScrollBarThumbPressedBrush" Color="#60709C" />
+
+</ResourceDictionary>

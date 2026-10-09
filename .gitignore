@@ -1,0 +1,43 @@
+# Build and test outputs
+bin/
+obj/
+**/publish/
+artifacts/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Local IDE state and reports
+.vs/
+.vscode/
+.idea/
+.cursor/
+*.user
+*.suo
+docs/REVIEW*.md
+
+# Local profiles, logs, credentials and backups
+accounts.json
+accounts.json.*
+settings.local.json
+appsettings.Local.json
+*.log
+*.log.*
+*.bak
+*.corrupt-*
+.env
+.env.*
+!.env.example
+auth.json
+auth.json.*
+.credentials.json
+*.pem
+*.key
+*.pfx
+*.p12
+
+# OS metadata
+Thumbs.db
+Desktop.ini
+.DS_Store

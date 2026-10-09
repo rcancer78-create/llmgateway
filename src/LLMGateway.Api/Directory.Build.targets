@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup>
+    <Content Include="..\..\wwwroot\**\*" LinkBase="wwwroot" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

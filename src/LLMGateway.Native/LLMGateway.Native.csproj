@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>LLMGateway.Native</RootNamespace>
+    <Description>Adapters for locally installed native clients: Codex, Cursor, Antigravity, Grok, Claude Code.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LLMGateway.Core\LLMGateway.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="LLMGateway.Tests" />
+  </ItemGroup>
+</Project>
